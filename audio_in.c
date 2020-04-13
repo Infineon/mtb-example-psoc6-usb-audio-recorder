@@ -37,8 +37,19 @@
 #include "audio.h"
 #include "usb_comm.h"
 
+#include "cyhal.h"
 #include "cycfg.h"
 #include "cy_sysint.h"
+
+/*******************************************************************************
+* Local Constants
+*******************************************************************************/
+/* PDM/PCM Pins */
+#define PDM_DATA                    P10_5
+#define PDM_CLK                     P10_4
+
+/* Decimation Rate of the PDM/PCM block */
+#define DECIMATION_RATE             64u
 
 /*******************************************************************************
 * Local Functions
@@ -57,9 +68,6 @@ CY_USB_DEV_ALLOC_ENDPOINT_BUFFER(audio_in_usb_buffer, AUDIO_IN_ENDPOINT_SIZE);
 /* PCM buffer data (16-bits) */
 uint16_t audio_in_pcm_buffer[AUDIO_MAX_DATA_SIZE];
 
-/* Current number of bytes to be transferred in the Audio IN endpoint */
-volatile uint32_t audio_in_count;
-
 /* Audio IN flags */
 volatile bool audio_in_start_recording = false;
 volatile bool audio_in_is_recording    = false;
@@ -67,12 +75,25 @@ volatile bool audio_in_is_recording    = false;
 /* Size of the frame */
 volatile uint32_t audio_in_frame_size = AUDIO_FRAME_DATA_SIZE;
 
+/* HAL object */
+cyhal_pdm_pcm_t pdm_pcm;
+
+/* HAL Config */
+const cyhal_pdm_pcm_cfg_t pdm_pcm_cfg = 
+{
+    .sample_rate     = AUDIO_SAMPLING_RATE_48KHZ,
+    .decimation_rate = DECIMATION_RATE,
+    .mode            = CYHAL_PDM_PCM_MODE_STEREO, 
+    .word_length     = 16,  /* bits */
+    .left_gain       = 0,   /* dB */
+    .right_gain      = 0,   /* dB */
+};
+
 /*******************************************************************************
 * Function Name: audio_in_init
 ********************************************************************************
 * Summary:
-*   Initialize the audio IN endpoint by setting up the DMAs involved and the
-*   PDM/PCM block.
+*   Initialize the audio IN endpoint and PDM/PCM block.
 *
 *******************************************************************************/
 void audio_in_init(void)
@@ -83,19 +104,8 @@ void audio_in_init(void)
                                               audio_in_endpoint_callback, 
                                               &usb_drvContext);
 
-    /* Initialize the DMAs */
-    Cy_DMA_Descriptor_Init(&CYBSP_DMA_PCM_Descriptor_0, &CYBSP_DMA_PCM_Descriptor_0_config);
-    Cy_DMA_Channel_Init(CYBSP_DMA_PCM_HW, CYBSP_DMA_PCM_CHANNEL, &CYBSP_DMA_PCM_channelConfig);
-    Cy_DMA_Enable(CYBSP_DMA_PCM_HW);
-    Cy_DMA_Descriptor_SetSrcAddress(&CYBSP_DMA_PCM_Descriptor_0, (void *) &CYBSP_PDM_HW->RX_FIFO_RD);
-    Cy_DMA_Descriptor_SetDstAddress(&CYBSP_DMA_PCM_Descriptor_0, (void *) audio_in_pcm_buffer);
-    Cy_DMA_Channel_Enable(CYBSP_DMA_PCM_HW, CYBSP_DMA_PCM_CHANNEL);
-
-    /* Set the count equal to the frame size */
-    audio_in_count = audio_in_frame_size;
-
     /* Initialize the PDM PCM block */
-    Cy_PDM_PCM_Init(CYBSP_PDM_HW, &CYBSP_PDM_config);
+    cyhal_pdm_pcm_init(&pdm_pcm, PDM_DATA, PDM_CLK, NULL, &pdm_pcm_cfg);
 }
 
 /*******************************************************************************
@@ -141,10 +151,10 @@ void audio_in_process(void)
         memset(audio_in_pcm_buffer, 0, AUDIO_IN_ENDPOINT_SIZE);
 
         /* Clear PDM/PCM RX FIFO */
-        Cy_PDM_PCM_ClearFifo(CYBSP_PDM_HW);
+        cyhal_pdm_pcm_clear(&pdm_pcm);
 
-        /* Enable PDM/PCM */
-        Cy_PDM_PCM_Enable(CYBSP_PDM_HW);
+        /* Start PDM/PCM */
+        cyhal_pdm_pcm_start(&pdm_pcm);
 
         /* Start a transfer to the Audio IN endpoint */
         Cy_USB_Dev_WriteEpNonBlocking(AUDIO_STREAMING_IN_ENDPOINT,
@@ -167,12 +177,22 @@ void audio_in_endpoint_callback(USBFS_Type *base,
                                 uint32_t error_type, 
                                 cy_stc_usbfs_dev_drv_context_t *context)
 {
-	uint32_t count;
+    /* Set the count equal to the frame size */
+    size_t audio_in_count = audio_in_frame_size;
 
     (void) error_type;
     (void) endpoint,
     (void) context;
     (void) base;
+
+    /* Read all the data in the PDM/PCM buffer */
+    cyhal_pdm_pcm_read(&pdm_pcm, (void *) audio_in_pcm_buffer, &audio_in_count);
+
+    /* Limit the size to avoid overflow in the pcm buffer */
+    if (audio_in_count > AUDIO_MAX_DATA_SIZE)
+    {
+        audio_in_count = AUDIO_MAX_DATA_SIZE;
+    }
 
     /* Check if should keep recording */
     if (audio_in_is_recording == true)
@@ -182,30 +202,6 @@ void audio_in_endpoint_callback(USBFS_Type *base,
                                       audio_in_count*AUDIO_SAMPLE_DATA_SIZE,
                                       &usb_devContext);
     }
-
-    /* Get the current FIFO level */
-    count = Cy_PDM_PCM_GetNumInFifo(CYBSP_PDM_HW);
-
-    /* Find out if the FIFO level is too full or too empty */
-    if (count > CYBSP_PDM_config.rxFifoTriggerLevel)
-    {
-        /* Too many samples in the FIFO, increase the frame size */
-    	audio_in_count = audio_in_frame_size + AUDIO_DELTA_VALUE;
-    }
-    else if (count < audio_in_frame_size)
-    {
-        /* Too few samples in the FIFO, decrease the frame size */
-    	audio_in_count = audio_in_frame_size - AUDIO_DELTA_VALUE;
-    }
-    else
-    {
-        /* Right amount of samples in the FIFO, keep the frame size */
-    	audio_in_count = audio_in_frame_size;
-    }
-
-    /* Update the DMA settings to transfer the right number of samples */
-    Cy_DMA_Descriptor_SetXloopDataCount(&CYBSP_DMA_PCM_Descriptor_0, audio_in_count);
-    Cy_DMA_Channel_Enable(CYBSP_DMA_PCM_HW, CYBSP_DMA_PCM_CHANNEL);
 }
 
 

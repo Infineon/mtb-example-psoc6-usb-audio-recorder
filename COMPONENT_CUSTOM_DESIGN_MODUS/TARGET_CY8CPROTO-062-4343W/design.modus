@@ -1,38 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Design version="12" xmlns="http://cypress.com/xsd/cydesignfile_v3">
-    <ToolInfo version="1.0.0"/>
+    <ToolInfo version="2.1.0.1154"/>
     <Devices>
         <Device mpn="CY8C624ABZI-D44">
             <BlockConfig>
-                <Block location="audioss[0].pdm[0]">
-                    <Alias value="CYBSP_PDM"/>
-                    <Personality template="mxs40pdm" version="1.0">
-                        <Param id="chanSwap" value="false"/>
-                        <Param id="gainLeft" value="CY_PDM_PCM_GAIN_10_5_DB"/>
-                        <Param id="gainRight" value="CY_PDM_PCM_GAIN_10_5_DB"/>
-                        <Param id="chanSelect" value="CY_PDM_PCM_OUT_STEREO"/>
-                        <Param id="highPassDisable" value="false"/>
-                        <Param id="highPassFilterGain" value="8"/>
-                        <Param id="rxNotEmpty" value="false"/>
-                        <Param id="rxOverflow" value="false"/>
-                        <Param id="rxTrig" value="false"/>
-                        <Param id="rxUnderflow" value="false"/>
-                        <Param id="signExtension" value="false"/>
-                        <Param id="wordLength" value="CY_PDM_PCM_WLEN_16_BIT"/>
-                        <Param id="rxFifoDmaEnable" value="true"/>
-                        <Param id="rxFifoTriggerLevel" value="128"/>
-                        <Param id="softMuteEnable" value="false"/>
-                        <Param id="softMuteFineGain" value="1"/>
-                        <Param id="softMuteCycles" value="CY_PDM_PCM_SOFT_MUTE_CYCLES_96"/>
-                        <Param id="clkDiv" value="CY_PDM_PCM_CLK_DIV_BYPASS"/>
-                        <Param id="mClkDiv" value="CY_PDM_PCM_CLK_DIV_BYPASS"/>
-                        <Param id="ckoDiv" value="7"/>
-                        <Param id="ckoDelay" value="0"/>
-                        <Param id="sincDecRate" value="32"/>
-                        <Param id="extClock" value="false"/>
-                        <Param id="inFlash" value="true"/>
-                    </Personality>
-                </Block>
+                <Block location="audioss[0].pdm[0]"/>
                 <Block location="cpuss[0].dap[0]">
                     <Personality template="mxs40dap" version="1.0">
                         <Param id="dbgMode" value="SWD"/>
@@ -323,37 +295,7 @@
                         <Param id="inFlash" value="true"/>
                     </Personality>
                 </Block>
-                <Block location="cpuss[0].dw1[0].chan[26]">
-                    <Alias value="CYBSP_DMA_PCM"/>
-                    <Personality template="mxs40dma" version="1.0">
-                        <Param id="CRC_DATA_REVERSE" value="false"/>
-                        <Param id="CRC_DATA_XOR" value="0"/>
-                        <Param id="CRC_REMINDER_REVERSE" value="false"/>
-                        <Param id="CRC_REMINDER_XOR" value="0"/>
-                        <Param id="CRC_POLYNOMIAL" value="79764919"/>
-                        <Param id="CHANNEL_PRIORITY" value="3"/>
-                        <Param id="NUM_OF_DESCRIPTORS" value="1"/>
-                        <Param id="PREEMPTABLE" value="false"/>
-                        <Param id="BUFFERABLE" value="false"/>
-                        <Param id="DESCR_SELECTION" value="0"/>
-                        <Param id="TRIG_OUT_TYPE_0" value="CY_DMA_DESCR"/>
-                        <Param id="INTR_OUT_0" value="CY_DMA_DESCR"/>
-                        <Param id="ENABLE_CHAINING_0" value="true"/>
-                        <Param id="CHAIN_TO_0" value="0"/>
-                        <Param id="CHAN_STATE_COMPL_0" value="CY_DMA_CHANNEL_DISABLED"/>
-                        <Param id="TRIG_IN_TYPE_0" value="CY_DMA_DESCR"/>
-                        <Param id="TRIG_DEACT_0" value="CY_DMA_RETRIG_16CYC"/>
-                        <Param id="DATA_TRANSFER_WIDTH_0" value="WordToHalfword"/>
-                        <Param id="X_NUM_OF_ELEMENTS_0" value="96"/>
-                        <Param id="X_SRC_INCREMENT_0" value="0"/>
-                        <Param id="X_DST_INCREMENT_0" value="1"/>
-                        <Param id="CRC_0" value="false"/>
-                        <Param id="Y_NUM_OF_ELEMENTS_0" value="1"/>
-                        <Param id="Y_SRC_INCREMENT_0" value="1"/>
-                        <Param id="Y_DST_INCREMENT_0" value="1"/>
-                        <Param id="inFlash" value="true"/>
-                    </Personality>
-                </Block>
+                <Block location="cpuss[0].dw1[0].chan[26]"/>
                 <Block location="csd[0].csd[0]">
                     <Alias value="CYBSP_CSD"/>
                     <Personality template="mxs40csd" version="2.0">
@@ -410,30 +352,6 @@
                     <Alias value="CYBSP_WCO_OUT"/>
                     <Personality template="mxs40pin" version="1.1">
                         <Param id="DriveModes" value="CY_GPIO_DM_ANALOG"/>
-                        <Param id="initialState" value="1"/>
-                        <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
-                        <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
-                        <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
-                        <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
-                        <Param id="sioOutputBuffer" value="true"/>
-                        <Param id="inFlash" value="true"/>
-                    </Personality>
-                </Block>
-                <Block location="ioss[0].port[10].pin[4]">
-                    <Personality template="mxs40pin" version="1.1">
-                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG_IN_OFF"/>
-                        <Param id="initialState" value="1"/>
-                        <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
-                        <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
-                        <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
-                        <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
-                        <Param id="sioOutputBuffer" value="true"/>
-                        <Param id="inFlash" value="true"/>
-                    </Personality>
-                </Block>
-                <Block location="ioss[0].port[10].pin[5]">
-                    <Personality template="mxs40pin" version="1.1">
-                        <Param id="DriveModes" value="CY_GPIO_DM_HIGHZ"/>
                         <Param id="initialState" value="1"/>
                         <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
@@ -678,9 +596,12 @@
                     </Personality>
                 </Block>
                 <Block location="srss[0].clock[0].fll[0]">
-                    <Personality template="mxs40fll" version="1.0">
+                    <Personality template="mxs40fll" version="2.0">
                         <Param id="configuration" value="auto"/>
-                        <Param id="desiredFrequency" value="100.000"/>
+                        <Param id="desiredFrequency" value=""/>
+                        <Param id="multiplier" value=""/>
+                        <Param id="reference" value=""/>
+                        <Param id="tolerance" value=""/>
                     </Personality>
                 </Block>
                 <Block location="srss[0].clock[0].hfclk[0]">
@@ -764,7 +685,7 @@
                     </Personality>
                 </Block>
                 <Block location="srss[0].clock[0].pll[0]">
-                    <Personality template="mxs40pll" version="1.0">
+                    <Personality template="mxs40pll" version="2.0">
                         <Param id="lowFrequencyMode" value="false"/>
                         <Param id="configuration" value="auto"/>
                         <Param id="desiredFrequency" value="24.576"/>
@@ -772,7 +693,7 @@
                     </Personality>
                 </Block>
                 <Block location="srss[0].clock[0].pll[1]">
-                    <Personality template="mxs40pll" version="1.0">
+                    <Personality template="mxs40pll" version="2.0">
                         <Param id="lowFrequencyMode" value="false"/>
                         <Param id="configuration" value="auto"/>
                         <Param id="desiredFrequency" value="48.000"/>
@@ -837,22 +758,6 @@
                 </Block>
             </BlockConfig>
             <Netlist>
-                <Net>
-                    <Port name="audioss[0].pdm[0].clock[0]"/>
-                    <Port name="srss[0].clock[0].hfclk[1].root_clk[0]"/>
-                </Net>
-                <Net>
-                    <Port name="audioss[0].pdm[0].pdm_clk[0]"/>
-                    <Port name="ioss[0].port[10].pin[4].digital_out[0]"/>
-                </Net>
-                <Net>
-                    <Port name="audioss[0].pdm[0].pdm_data[0]"/>
-                    <Port name="ioss[0].port[10].pin[5].digital_in[0]"/>
-                </Net>
-                <Net>
-                    <Port name="audioss[0].pdm[0].tr_pdm_rx_req[0]"/>
-                    <Port name="cpuss[0].dw1[0].chan[26].tr_in[0]"/>
-                </Net>
                 <Net>
                     <Port name="cpuss[0].dap[0].swj_swclk_tclk[0]"/>
                     <Port name="ioss[0].port[6].pin[7].digital_in[0]"/>
@@ -970,6 +875,5 @@
             <Netlist/>
         </Device>
     </Devices>
-    <Libraries/>
     <ConfiguratorData/>
 </Design>
