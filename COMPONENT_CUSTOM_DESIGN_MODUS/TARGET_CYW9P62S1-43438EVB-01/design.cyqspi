@@ -22,42 +22,42 @@
             <MemoryId>Not used</MemoryId>
             <MemoryMapped>false</MemoryMapped>
             <DualQuad>None</DualQuad>
-            <StartAddress>0x18010000</StartAddress>
-            <Size>0x10000</Size>
-            <EndAddress>0x1801FFFF</EndAddress>
+            <StartAddress>0x0</StartAddress>
+            <Size>0x0</Size>
+            <EndAddress></EndAddress>
             <WriteEnable>false</WriteEnable>
             <Encrypt>false</Encrypt>
             <DataSelect>SPI_MOSI_MISO_DATA_0_1</DataSelect>
             <MemoryConfigsPath>default_memory.xml</MemoryConfigsPath>
-            <ConfigDataInFlash>true</ConfigDataInFlash>
+            <ConfigDataInFlash>false</ConfigDataInFlash>
         </SlotConfig>
         <SlotConfig>
             <SlaveSlot>2</SlaveSlot>
             <MemoryId>Not used</MemoryId>
             <MemoryMapped>false</MemoryMapped>
             <DualQuad>None</DualQuad>
-            <StartAddress>0x18020000</StartAddress>
-            <Size>0x10000</Size>
-            <EndAddress>0x1802FFFF</EndAddress>
+            <StartAddress>0x0</StartAddress>
+            <Size>0x0</Size>
+            <EndAddress></EndAddress>
             <WriteEnable>false</WriteEnable>
             <Encrypt>false</Encrypt>
             <DataSelect>SPI_MOSI_MISO_DATA_0_1</DataSelect>
             <MemoryConfigsPath>default_memory.xml</MemoryConfigsPath>
-            <ConfigDataInFlash>true</ConfigDataInFlash>
+            <ConfigDataInFlash>false</ConfigDataInFlash>
         </SlotConfig>
         <SlotConfig>
             <SlaveSlot>3</SlaveSlot>
             <MemoryId>Not used</MemoryId>
             <MemoryMapped>false</MemoryMapped>
             <DualQuad>None</DualQuad>
-            <StartAddress>0x18030000</StartAddress>
-            <Size>0x10000</Size>
-            <EndAddress>0x1803FFFF</EndAddress>
+            <StartAddress>0x0</StartAddress>
+            <Size>0x0</Size>
+            <EndAddress></EndAddress>
             <WriteEnable>false</WriteEnable>
             <Encrypt>false</Encrypt>
             <DataSelect>SPI_MOSI_MISO_DATA_0_1</DataSelect>
             <MemoryConfigsPath>default_memory.xml</MemoryConfigsPath>
-            <ConfigDataInFlash>true</ConfigDataInFlash>
+            <ConfigDataInFlash>false</ConfigDataInFlash>
         </SlotConfig>
     </SlotConfigs>
 </Configuration>

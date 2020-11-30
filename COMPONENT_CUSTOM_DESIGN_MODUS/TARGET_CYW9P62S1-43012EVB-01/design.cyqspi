@@ -5,7 +5,7 @@
     <SlotConfigs>
         <SlotConfig>
             <SlaveSlot>0</SlaveSlot>
-            <MemoryId>S25FL512S-4byteaddr</MemoryId>
+            <MemoryId>S25FS512S</MemoryId>
             <MemoryMapped>true</MemoryMapped>
             <DualQuad>None</DualQuad>
             <StartAddress>0x18000000</StartAddress>
@@ -14,7 +14,7 @@
             <WriteEnable>true</WriteEnable>
             <Encrypt>false</Encrypt>
             <DataSelect>QUAD_SPI_DATA_0_3</DataSelect>
-            <MemoryConfigsPath>S25FL512S-4byteaddr</MemoryConfigsPath>
+            <MemoryConfigsPath>S25FS512S</MemoryConfigsPath>
             <ConfigDataInFlash>true</ConfigDataInFlash>
         </SlotConfig>
         <SlotConfig>
@@ -27,9 +27,9 @@
             <EndAddress>0x1801FFFF</EndAddress>
             <WriteEnable>false</WriteEnable>
             <Encrypt>false</Encrypt>
-            <DataSelect>SPI_MOSI_MISO_DATA_0_1</DataSelect>
+            <DataSelect>QUAD_SPI_DATA_0_3</DataSelect>
             <MemoryConfigsPath>default_memory.xml</MemoryConfigsPath>
-            <ConfigDataInFlash>true</ConfigDataInFlash>
+            <ConfigDataInFlash>false</ConfigDataInFlash>
         </SlotConfig>
         <SlotConfig>
             <SlaveSlot>2</SlaveSlot>
@@ -43,7 +43,7 @@
             <Encrypt>false</Encrypt>
             <DataSelect>SPI_MOSI_MISO_DATA_0_1</DataSelect>
             <MemoryConfigsPath>default_memory.xml</MemoryConfigsPath>
-            <ConfigDataInFlash>true</ConfigDataInFlash>
+            <ConfigDataInFlash>false</ConfigDataInFlash>
         </SlotConfig>
         <SlotConfig>
             <SlaveSlot>3</SlaveSlot>
@@ -57,7 +57,7 @@
             <Encrypt>false</Encrypt>
             <DataSelect>SPI_MOSI_MISO_DATA_0_1</DataSelect>
             <MemoryConfigsPath>default_memory.xml</MemoryConfigsPath>
-            <ConfigDataInFlash>true</ConfigDataInFlash>
+            <ConfigDataInFlash>false</ConfigDataInFlash>
         </SlotConfig>
     </SlotConfigs>
 </Configuration>

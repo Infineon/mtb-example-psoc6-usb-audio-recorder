@@ -4,7 +4,7 @@
 * Description: This is the source code for the USB Audio Recorder Example
 *              for ModusToolbox.
 *
-* Related Document: See Readme.md
+* Related Document: See README.md
 *
 *
 *******************************************************************************
@@ -42,7 +42,6 @@
 #include "cy_pdl.h"
 #include "cyhal.h"
 #include "cybsp.h"
-
 #include "audio_in.h"
 #include "usb_comm.h"
 

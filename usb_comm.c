@@ -3,34 +3,37 @@
 *
 * Description: This file contains the implementation of the USB interface.
 *
-******************************************************************************
-* Copyright (2020), Cypress Semiconductor Corporation.
-******************************************************************************
-* This software is owned by Cypress Semiconductor Corporation (Cypress) and is
-* protected by and subject to worldwide patent protection (United States and
-* foreign), United States copyright laws and international treaty provisions.
-* Cypress hereby grants to licensee a personal, non-exclusive, non-transferable
-* license to copy, use, modify, create derivative works of, and compile the
-* Cypress Source Code and derivative works for the sole purpose of creating
-* custom software in support of licensee product to be used only in conjunction
-* with a Cypress integrated circuit as specified in the applicable agreement.
-* Any reproduction, modification, translation, compilation, or representation of
-* this software except as specified above is prohibited without the express
+*******************************************************************************
+* (c) 2019-2020, Cypress Semiconductor Corporation. All rights reserved.
+*******************************************************************************
+* This software, including source code, documentation and related materials
+* ("Software"), is owned by Cypress Semiconductor Corporation or one of its
+* subsidiaries ("Cypress") and is protected by and subject to worldwide patent
+* protection (United States and foreign), United States copyright laws and
+* international treaty provisions. Therefore, you may use this Software only
+* as provided in the license agreement accompanying the software package from
+* which you obtained this Software ("EULA").
+*
+* If no EULA applies, Cypress hereby grants you a personal, non-exclusive,
+* non-transferable license to copy, modify, and compile the Software source
+* code solely for use in connection with Cypress's integrated circuit products.
+* Any reproduction, modification, translation, compilation, or representation
+* of this Software except as specified above is prohibited without the express
 * written permission of Cypress.
 *
-* Disclaimer: CYPRESS MAKES NO WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, WITH
-* REGARD TO THIS MATERIAL, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-* Cypress reserves the right to make changes without further notice to the
-* materials described herein. Cypress does not assume any liability arising out
-* of the application or use of any product or circuit described herein. Cypress
-* does not authorize its products for use as critical components in life-support
-* systems where a malfunction or failure may reasonably be expected to result in
-* significant injury to the user. The inclusion of Cypress' product in a life-
-* support systems application implies that the manufacturer assumes all risk of
-* such use and in doing so indemnifies Cypress against all charges. Use may be
-* limited by and subject to the applicable Cypress software license agreement.
-*****************************************************************************/
+* Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY KIND,
+* EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT, IMPLIED
+* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. Cypress
+* reserves the right to make changes to the Software without notice. Cypress
+* does not assume any liability arising out of the application or use of the
+* Software or any product or circuit described in the Software. Cypress does
+* not authorize its products for use in any products where a malfunction or
+* failure of the Cypress product may reasonably be expected to result in
+* significant property damage, injury or death ("High Risk Product"). By
+* including Cypress's product in a High Risk Product, the manufacturer of such
+* system or application assumes all risk of such use and in doing so agrees to
+* indemnify Cypress against all liability.
+*******************************************************************************/
 
 #include "usb_comm.h"
 
@@ -77,9 +80,9 @@ static void usb_low_isr(void);
 * Global Variables
 *******************************************************************************/
 uint8_t usb_comm_mute;
-uint8_t usb_comm_cur_volume[AUDIO_VOLUME_SIZE];
-uint8_t usb_comm_min_volume[AUDIO_VOLUME_SIZE] = {AUDIO_VOL_MIN_LSB, AUDIO_VOL_MIN_MSB};
-uint8_t usb_comm_max_volume[AUDIO_VOLUME_SIZE] = {AUDIO_VOL_MAX_LSB, AUDIO_VOL_MAX_MSB};
+uint8_t usb_comm_cur_volume[AUDIO_VOLUME_SIZE]; 
+uint8_t usb_comm_min_volume[AUDIO_VOLUME_SIZE] = {CY_USB_DEV_AUDIO_VOLUME_MIN_LSB, CY_USB_DEV_AUDIO_VOLUME_MIN_MSB};
+uint8_t usb_comm_max_volume[AUDIO_VOLUME_SIZE] = {CY_USB_DEV_AUDIO_VOLUME_MAX_LSB, CY_USB_DEV_AUDIO_VOLUME_MAX_MSB};
 uint8_t usb_comm_res_volume[AUDIO_VOLUME_SIZE] = {AUDIO_VOL_RES_LSB, AUDIO_VOL_RES_MSB};
 
 uint8_t usb_comm_ep_map[] = {0U, 0U, 1U};
@@ -151,7 +154,7 @@ void usb_comm_init(void)
 * Function Name: usb_comm_connect
 ********************************************************************************
 * Summary:
-*   Start USB enumeration.
+*   Starts USB enumeration.
 *
 *******************************************************************************/
 void usb_comm_connect(void)
@@ -346,6 +349,7 @@ cy_en_usb_dev_status_t usb_comm_request_received(cy_stc_usb_dev_control_transfer
 
                                     retStatus = CY_USB_DEV_SUCCESS;
                                 }
+                                break;
 
                                 case CY_USB_DEV_AUDIO_RQST_SET_MIN:
                                 {
@@ -355,6 +359,7 @@ cy_en_usb_dev_status_t usb_comm_request_received(cy_stc_usb_dev_control_transfer
 
                                     retStatus = CY_USB_DEV_SUCCESS;
                                 }
+                                break;
 
                                 case CY_USB_DEV_AUDIO_RQST_SET_MAX:
                                 {
@@ -364,6 +369,7 @@ cy_en_usb_dev_status_t usb_comm_request_received(cy_stc_usb_dev_control_transfer
 
                                     retStatus = CY_USB_DEV_SUCCESS;
                                 }
+                                break;
 
                                 case CY_USB_DEV_AUDIO_RQST_SET_RES:
                                 {
@@ -373,6 +379,7 @@ cy_en_usb_dev_status_t usb_comm_request_received(cy_stc_usb_dev_control_transfer
 
                                     retStatus = CY_USB_DEV_SUCCESS;
                                 }
+                                break;
 
                                 default:
                                 break;
@@ -388,7 +395,7 @@ cy_en_usb_dev_status_t usb_comm_request_received(cy_stc_usb_dev_control_transfer
 
                 default:
                 break;
-            }	/* switch (CY_HI8(transfer->setup.wValue)) */
+            }   /* switch (CY_HI8(transfer->setup.wValue)) */
         }
         /* Endpoint */
         else if ((AUDIO_STREAMING_OUT_ENDPOINT_ADDR == transfer->setup.wIndex) ||
@@ -443,7 +450,6 @@ cy_en_usb_dev_status_t usb_comm_request_received(cy_stc_usb_dev_control_transfer
 
     return retStatus;
 }
-
 
 /*******************************************************************************
 * Function Name: usb_comm_request_completed
@@ -511,6 +517,7 @@ cy_en_usb_dev_status_t usb_comm_request_completed(cy_stc_usb_dev_control_transfe
 
                                     retStatus = CY_USB_DEV_SUCCESS;
                                 }
+                                break;
 
                                 case CY_USB_DEV_AUDIO_RQST_SET_MIN:
                                 {
@@ -519,6 +526,7 @@ cy_en_usb_dev_status_t usb_comm_request_completed(cy_stc_usb_dev_control_transfe
 
                                     retStatus = CY_USB_DEV_SUCCESS;
                                 }
+                                break;
 
                                 case CY_USB_DEV_AUDIO_RQST_SET_MAX:
                                 {
@@ -527,6 +535,7 @@ cy_en_usb_dev_status_t usb_comm_request_completed(cy_stc_usb_dev_control_transfe
 
                                     retStatus = CY_USB_DEV_SUCCESS;
                                 }
+                                break;
 
                                 case CY_USB_DEV_AUDIO_RQST_SET_RES:
                                 {
@@ -535,6 +544,7 @@ cy_en_usb_dev_status_t usb_comm_request_completed(cy_stc_usb_dev_control_transfe
 
                                     retStatus = CY_USB_DEV_SUCCESS;
                                 }
+                                break;
 
                                 default:
                                 break;
@@ -688,7 +698,6 @@ static void usb_high_isr(void)
                                &usb_drvContext);
 }
 
-
 /***************************************************************************
 * Function Name: usb_medium_isr
 ********************************************************************************
@@ -703,7 +712,6 @@ static void usb_medium_isr(void)
                                Cy_USBFS_Dev_Drv_GetInterruptCauseMed(CYBSP_USBDEV_HW), 
                                &usb_drvContext);
 }
-
 
 /***************************************************************************
 * Function Name: usb_low_isr
