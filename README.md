@@ -1,3 +1,5 @@
+**This repository is deprecated.** Use the ModusToolbox&trade; example available here - https://github.com/Infineon/mtb-example-usb-device-audio-recorder-freertos
+
 # PSoC&trade; 6 MCU: USB audio recorder
 
 This example demonstrates the use of PSoC&trade; 6 MCU to implement an audio recorder using the USB Audio Device Class.
